@@ -1,0 +1,15 @@
+instagramclone
+1>authentication
+-->Register
+-->login
+-->logout
+
+2>posts
+-->creatingpost
+-->fetching all posts of users 
+-->fetching individual post of users
+
+3>features
+-->follow
+-->like
+-->subscribe
