@@ -5,17 +5,18 @@ const usermodel=require("../models/usermodel")
 
 async function followcontroller(req,res){
 
-     const followerid=req.user.id;
+
+     const followerusername=req.user.username;
      const followeeusername=req.params.username;
 
-     const follower=await usermodel.findById(followerid)
+    //  const follower=await usermodel.findById(followerid)
 
-     if(!follower){
-        return res.status(401).json({
-            message:"follower not exist"
-        })
-     }
-       const followerusername=follower.username;
+    //  if(!follower){
+    //     return res.status(401).json({
+    //         message:"follower not exist"
+    //     })
+    //  }
+    //    const followerusername=follower.username;
     if(followerusername===followeeusername){
         return res.status(400).json({
             message:"you cannot follow yourself"

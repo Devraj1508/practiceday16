@@ -19,7 +19,7 @@ async function registeruser(req,res){
         bio,
         profilePicture
     })
-    const token=jwt.sign({id:newuser._id,uername:newuser.username},process.env.JWT_SECRET,{expiresIn:"1d"});
+    const token=jwt.sign({id:newuser._id,username:newuser.username},process.env.JWT_SECRET,{expiresIn:"1d"});
     res.cookie("token",token);
     res.status(201).json({
         message:"User registered successfully",
@@ -47,7 +47,7 @@ async function loginuser(req,res){
     if(!isPasswordValid){
         return res.status(400).json({message:"Invalid password"});
     }
-    const token=jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1d"});
+    const token=jwt.sign({id:user._id,username:user.username},process.env.JWT_SECRET,{expiresIn:"1d"});
     res.cookie("token",token);
     res.status(200).json({
         message:"User logged in successfully",
