@@ -9,17 +9,26 @@ async function followcontroller(req,res){
      const followerusername=req.user.username;
      const followeeusername=req.params.username;
 
-    //  const follower=await usermodel.findById(followerid)
-
-    //  if(!follower){
-    //     return res.status(401).json({
-    //         message:"follower not exist"
-    //     })
-    //  }
-    //    const followerusername=follower.username;
     if(followerusername===followeeusername){
         return res.status(400).json({
             message:"you cannot follow yourself"
+        })
+    }
+    const isAlreadyfollow=await followmodel.findOne({
+        follower:followerusername,
+        followee:followeeusername
+    })
+    if(isAlreadyfollow){
+        return res.status(400).json({
+            message:"you are already following this user"
+        })
+    }
+    const isUserExist=await usermodel.findOne({
+        username:followeeusername
+    })
+    if(!isUserExist){
+        return res.status(404).json({
+            message:"user not found"
         })
     }
      const follow=await followmodel.create({
