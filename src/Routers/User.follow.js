@@ -2,9 +2,6 @@ const express=require("express")
 const {findinguser}=require("../middleware/authmiddleware")
 const controller=require("../controllers/followcontroler")
 
-console.log("🔥 ROUTER LOADED");
-console.log("findinguser:", typeof findinguser);
-console.log("controller:", typeof controller);
 
 
 const followRouter=express.Router();
@@ -12,7 +9,7 @@ const followRouter=express.Router();
 
 
 
-followRouter.post("/follow/:username",findinguser,controller);
-
+followRouter.post("/follow/:username",findinguser,controller.followcontroller);
+followRouter.delete("/unfollow/:username",findinguser,controller.unfollowcontroller);
 
 module.exports=followRouter;
