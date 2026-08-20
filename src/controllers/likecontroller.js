@@ -5,6 +5,7 @@ async function likecontroller(req,res){
     const postid=req.params.postid;
     const username=req.user.username;
 
+
     const isAlreadyLiked=await likemodel.findOne({
         postid:postid,
         username:username
@@ -20,5 +21,23 @@ async function likecontroller(req,res){
     })
     res.status(200).json({message:"post liked successfully",like})
 }
-module.exports={likecontroller}
+
+
+async function unlikecontroller(req,res){
+    const postid=req.params.postid;
+    const username=req.user.username;
+
+    const like=await likemodel.findOneAndDelete({
+        postid:postid,
+        username:username
+    })
+    if(!like){
+        return res.status(400).json({
+            message:"you have not liked this post"
+        })
+    }
+    res.status(200).json({message:"post unliked successfully",like})
+}
+
+module.exports={likecontroller,unlikecontroller}
 
