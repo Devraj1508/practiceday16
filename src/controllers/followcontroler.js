@@ -14,10 +14,12 @@ async function followcontroller(req,res){
             message:"you cannot follow yourself"
         })
     }
+
     const isAlreadyfollow=await followmodel.findOne({
         follower:followerusername,
         followee:followeeusername
     })
+
     if(isAlreadyfollow){
         return res.status(400).json({
             message:"you are already following this user"
@@ -37,6 +39,7 @@ async function followcontroller(req,res){
      })
      res.status(200).json({message:"followed successfully",follow})
     }
+    
 
 //unfollow controller
 async function unfollowcontroller(req,res){
@@ -54,4 +57,49 @@ async function unfollowcontroller(req,res){
     }
     res.status(200).json({message:"unfollowed successfully",follow})
 }
-module.exports={followcontroller,unfollowcontroller}
+ 
+async function getfolloweraccepted(req,res){
+    const followeeusername=req.user.username;
+    const followers=await followmodel.find({
+        followee:followeeusername,
+        status:"accepted"
+    })
+    res.status(200).json({message:"followers fetched successfully", followers})
+}
+
+async function getfollowerpending(req,res){
+    const followeeusername=req.user.username;
+    const followers=await followmodel.find({
+        followee:followeeusername,
+        status:"pending"
+    })
+    res.status(200).json({message:"pending followers fetched successfully", followers})
+}
+
+async function getfollowerrejected(req,res){
+    const followeeusername=req.user.username;
+    const followers=await followmodel.find({
+        followee:followeeusername,
+        status:"rejected"
+    })
+    res.status(200).json({message:"rejected followers fetched successfully", followers})
+}
+
+//update follow status controller
+async function updatefollowstatuscontroller(req,res){
+    const followeeusername=req.user.username;
+    const followerusername=req.params.username;
+    const status=req.body.status;
+
+    const follow=await followmodel.findOneAndUpdate({
+        followee:followeeusername,
+        follower:followerusername
+    }, {
+        status:status
+    }, {
+        new:true
+    })
+    res.status(200).json({message:"follow status updated successfully", follow})
+}
+
+module.exports={followcontroller,unfollowcontroller,getfolloweraccepted,getfollowerpending,getfollowerrejected,updatefollowstatuscontroller}
